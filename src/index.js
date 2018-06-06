@@ -22,7 +22,6 @@ let payload;
  */
 function logEvent(req) {
   console.log(`HEADERS ${JSON.stringify(req.headers)}`);
-  console.log(`PAYLOAD ${JSON.stringify(req.body.payload)}`);
   return req;
 }
 
@@ -50,6 +49,7 @@ function parsePayload(req) {
   return new Promise((resolve, reject) => {
     try {
       payload = JSON.parse(req.body.payload);
+      console.log(`PAYLOAD ${JSON.stringify(payload)}`);
       resolve(req);
     } catch(err) {
       reject(err);

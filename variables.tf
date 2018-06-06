@@ -45,11 +45,6 @@ variable "region" {
   default     = "us-central1"
 }
 
-variable "timeout" {
-  description = "Timeout in seconds for Slack event listener."
-  default     = 10
-}
-
 variable "response" {
   description = "Slack response object."
   type        = "map"
@@ -57,4 +52,9 @@ variable "response" {
   default {
     text = "OK"
   }
+}
+
+variable "timeout" {
+  description = "Timeout in seconds for Slack event listener."
+  default     = 10
 }

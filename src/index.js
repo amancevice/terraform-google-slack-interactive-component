@@ -1,6 +1,5 @@
 const config = require('./config.json');
 const service = require('./client_secret.json');
-const response = require('./response.json');
 const { google } = require('googleapis');
 const topic = `projects/${config.google.project}/topics/${config.google.pubsub_topic}`;
 const pubsub = google.pubsub({

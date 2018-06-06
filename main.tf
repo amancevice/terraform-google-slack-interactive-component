@@ -7,7 +7,7 @@ provider "template" {
 }
 
 locals {
-  version = "0.1.0"
+  version = "0.1.1"
 }
 
 data "template_file" "config" {
@@ -43,11 +43,6 @@ data "archive_file" "archive" {
   source {
     content  = "${file("${path.module}/package.json")}"
     filename = "package.json"
-  }
-
-  source {
-    content  = "${jsonencode("${var.response}")}"
-    filename = "response.json"
   }
 }
 

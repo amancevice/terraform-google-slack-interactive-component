@@ -7,7 +7,7 @@ provider "template" {
 }
 
 locals {
-  version = "0.0.2"
+  version = "0.1.0"
 }
 
 data "template_file" "config" {

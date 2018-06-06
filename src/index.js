@@ -95,8 +95,8 @@ function publishEvent(req) {
  * @param {object} res Cloud Function response context.
  */
 function sendResponse(req, res) {
-  console.log(JSON.stringify(response));
-  res.json(response);
+  console.log('OK');
+  res.send();
 }
 
 /**

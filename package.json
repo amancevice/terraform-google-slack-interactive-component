@@ -1,0 +1,28 @@
+{
+  "name": "slack-interactive-component",
+  "version": "0.0.1",
+  "description": "Publish Slack events to Pub/Sub",
+  "main": "index.js",
+  "dependencies": {
+    "@slack/client": "^4.3.0",
+    "googleapis": "^29.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amancevice/terraform-google-slack-interactive-component.git"
+  },
+  "keywords": [
+    "Slack",
+    "Google Cloud",
+    "Terraform"
+  ],
+  "author": "smallweirdnumber",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amancevice/terraform-google-slack-interactive-component/issues"
+  },
+  "homepage": "https://github.com/amancevice/terraform-google-slack-interactive-component"
+}

@@ -7,7 +7,14 @@ provider "template" {
 }
 
 locals {
-  version = "0.2.0"
+  version = "0.3.0"
+
+  package {
+    name = "slack-interactive-component"
+    dependencies {
+      googleapis = "^29.0.0"
+    }
+  }
 }
 
 data "template_file" "config" {
@@ -39,7 +46,7 @@ data "archive_file" "archive" {
   }
 
   source {
-    content  = "${file("${path.module}/package.json")}"
+    content  = "${jsonencode("${local.package}")}"
     filename = "package.json"
   }
 }
@@ -63,4 +70,9 @@ resource "google_cloudfunctions_function" "function" {
   labels {
     deployment-tool = "terraform"
   }
+}
+
+resource "google_pubsub_topic" "topic" {
+  count = "${length("${var.callback_ids}")}"
+  name  = "${element("${var.callback_ids}", count.index)}"
 }

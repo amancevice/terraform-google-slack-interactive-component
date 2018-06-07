@@ -41,6 +41,10 @@ module "slack_interactive_components" {
   client_secret      = "${var.client_secret}"
   project            = "${var.project}"
   verification_token = "${var.verification_token}"
+  callback_ids       = [
+    "my_callback1",
+    "my_callback2"
+  ]
 }
 
 variable "bucket_name" {
@@ -65,14 +69,14 @@ variable "verification_token" {
   description = "Slack verification token."
 }
 
-output "pubsub_topic" {
-  description = "Name of Pub/Sub topic for Slack events."
-  value       = "${module.slack_interactive_component.pubsub_topic}"
+output "pubsub_topics" {
+  description = "Pub/Sub topics created."
+  value       = "${module.slack_interactive_component.pubsub_topics}"
 }
 
-output "interactive_component_url" {
+output "request_url" {
   description = "Endpoint for event subscriptions to configure in Slack."
-  value       = "${module.slack_interactive_component.event_publisher_url}"
+  value       = "${module.slack_interactive_component.request_url}"
 }
 ```
 

@@ -25,6 +25,12 @@ variable "bucket_prefix" {
   default     = ""
 }
 
+variable "callback_ids" {
+  description = "List of Pub/Sub topic names to create."
+  type        = "list"
+  default     = []
+}
+
 variable "function_name" {
   description = "Cloud Function for publishing events from Slack to Pub/Sub."
   default     = "slack-interactive-component"

@@ -1,7 +1,6 @@
 const config = require('./config.json');
 const service = require('./client_secret.json');
 const { google } = require('googleapis');
-const topic = `projects/${config.google.project}/topics/${config.google.pubsub_topic}`;
 const pubsub = google.pubsub({
     version: 'v1',
     auth: new google.auth.JWT(
@@ -10,9 +9,6 @@ const pubsub = google.pubsub({
       null,
       ['https://www.googleapis.com/auth/pubsub'])
   });
-
-// Lazy global
-let payload;
 
 /**
  * Log event info.
@@ -25,21 +21,6 @@ function logEvent(req) {
 }
 
 /**
- * Verify request contains proper validation token.
- *
- * @param {object} req Cloud Function request context.
- */
-function verifyToken(req) {
-  // Verify token
-  if (!payload || payload.token !== config.slack.verification_token) {
-    const error = new Error('Invalid Credentials');
-    error.code = 401;
-    throw error;
-  }
-  return req;
-}
-
-/**
  * Parse event payload.
  *
  * @param {object} req Cloud Function request context.
@@ -47,9 +28,8 @@ function verifyToken(req) {
 function parsePayload(req) {
   return new Promise((resolve, reject) => {
     try {
-      payload = JSON.parse(req.body.payload);
-      console.log(`PAYLOAD ${JSON.stringify(payload)}`);
-      resolve(req);
+      console.log(`PAYLOAD ${req.body.payload}`);
+      resolve(JSON.parse(req.body.payload));
     } catch(err) {
       reject(err);
     }
@@ -57,43 +37,48 @@ function parsePayload(req) {
 }
 
 /**
+ * Verify request contains proper validation token.
+ *
+ * @param {object} payload Slack payload.
+ */
+function verifyToken(payload) {
+  // Verify token
+  if (!payload || payload.token !== config.slack.verification_token) {
+    const error = new Error('Invalid Credentials');
+    error.code = 401;
+    throw error;
+  }
+  return payload;
+}
+
+/**
  * Publish event to PubSub topic (if it's not a retry).
  *
- * @param {object} req Cloud Function request context.
+ * @param {object} payload Slack payload.
  */
-function publishEvent(req) {
-  // Skip if this is a Slack retry event (there must be a better way to handle this...)
-  if (req.headers['x-slack-retry-num'] !== undefined) return Promise.resolve(req);
-
-  // Publish event to PubSub if it is an `event_callback`
-  if (req.body.type === 'event_callback') {
-    return pubsub.projects.topics.publish({
-        topic: topic,
-        resource: {
-          messages: [
-            {
-              data: Buffer.from(JSON.stringify(req.body)).toString('base64')
-            }
-          ]
-        }
-      })
-      .then((pub) => {
-        console.log(`PUB/SUB ${JSON.stringify(pub.data)}`);
-        return req;
-      });
-  }
-
-  // Resolve request without publishing
-  return Promise.resolve(req);
+function publishEvent(payload) {
+  return pubsub.projects.topics.publish({
+      topic: `projects/${config.google.project}/topics/${payload.callback_id}`,
+      resource: {
+        messages: [
+          {
+            data: Buffer.from(JSON.stringify(payload)).toString('base64')
+          }
+        ]
+      }
+    })
+    .then((pub) => {
+      console.log(`PUB/SUB ${JSON.stringify(pub.data)}`);
+      return payload;
+    });
 }
 
 /**
  * Send OK HTTP response back to requester.
  *
- * @param {object} req Cloud Function request context.
  * @param {object} res Cloud Function response context.
  */
-function sendResponse(req, res) {
+function sendResponse(res) {
   console.log('OK');
   res.send();
 }
@@ -102,7 +87,7 @@ function sendResponse(req, res) {
  * Send Error HTTP response back to requester.
  *
  * @param {object} err The error object.
- * @param {object} req Cloud Function request context.
+ * @param {object} res Cloud Function response context.
  */
 function sendError(err, res) {
   console.error(err);
@@ -123,6 +108,6 @@ exports.publishEvent = (req, res) => {
     .then(parsePayload)
     .then(verifyToken)
     .then(publishEvent)
-    .then((req) => sendResponse(req, res))
+    .then((payload) => sendResponse(res))
     .catch((err) => sendError(err, res));
 }

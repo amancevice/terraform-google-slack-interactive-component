@@ -25,11 +25,6 @@ variable "bucket_prefix" {
   default     = ""
 }
 
-variable "pubsub_topic" {
-  description = "Pub/Sub topic name."
-  default     = "slack-interactions"
-}
-
 variable "function_name" {
   description = "Cloud Function for publishing events from Slack to Pub/Sub."
   default     = "slack-interactive-component"
@@ -38,20 +33,6 @@ variable "function_name" {
 variable "memory" {
   description = "Memory for Slack event listener."
   default     = 512
-}
-
-variable "region" {
-  description = "The region to operate under, if not specified by a given resource."
-  default     = "us-central1"
-}
-
-variable "response" {
-  description = "Slack response object."
-  type        = "map"
-
-  default {
-    text = "OK"
-  }
 }
 
 variable "timeout" {

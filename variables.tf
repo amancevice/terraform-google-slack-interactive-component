@@ -33,7 +33,7 @@ variable "callback_ids" {
 
 variable "function_name" {
   description = "Cloud Function for publishing events from Slack to Pub/Sub."
-  default     = "slack-interactive-component"
+  default     = "slack-interactive-components"
 }
 
 variable "memory" {

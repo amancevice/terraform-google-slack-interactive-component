@@ -24,9 +24,23 @@ variable "callback_ids" {
 }
 
 // Cloud Function
+variable "description" {
+  description = "Description of the function."
+  default     = "Slack interactive components"
+}
+
 variable "function_name" {
   description = "Cloud Function for publishing events from Slack to Pub/Sub."
   default     = "slack-interactive-components"
+}
+
+variable "labels" {
+  description = "A set of key/value label pairs to assign to the function."
+  type        = "map"
+
+  default {
+    deployment-tool = "terraform"
+  }
 }
 
 variable "memory" {

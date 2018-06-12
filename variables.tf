@@ -1,6 +1,4 @@
-/**
- * Required Variables
- */
+// Google Cloud
 variable "bucket_name" {
   description = "Cloud Storage bucket for storing Cloud Function code archives."
 }
@@ -13,24 +11,19 @@ variable "project" {
   description = "The ID of the project to apply any resources to."
 }
 
+// Slack
 variable "verification_token" {
   description = "Slack verification token."
 }
 
-/**
- * Optional Variables
- */
-variable "bucket_prefix" {
-  description = "Prefix for Cloud Storage bucket."
-  default     = ""
-}
-
+// Pub/Sub Topics
 variable "callback_ids" {
   description = "List of Pub/Sub topic names to create."
   type        = "list"
   default     = []
 }
 
+// Cloud Function
 variable "function_name" {
   description = "Cloud Function for publishing events from Slack to Pub/Sub."
   default     = "slack-interactive-components"

@@ -3,12 +3,9 @@ variable "bucket_name" {
   description = "Cloud Storage bucket for storing Cloud Function code archives."
 }
 
-variable "client_secret" {
-  description = "Google Cloud client secret JSON."
-}
-
 variable "project" {
   description = "The ID of the project to apply any resources to."
+  default     = ""
 }
 
 // Slack
@@ -45,7 +42,7 @@ variable "labels" {
 
 variable "memory" {
   description = "Memory for Slack event listener."
-  default     = 512
+  default     = 256
 }
 
 variable "timeout" {

@@ -2,6 +2,6 @@
   "name": "slack-interactive-component",
   "version": "${version}",
   "dependencies": {
-    "googleapis":"^29.0.0"
+    "@google-cloud/pubsub": "^0.18.0"
   }
 }

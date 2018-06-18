@@ -1,0 +1,10 @@
+google_project = "my-project-123456"
+google_region  = "us-central1"
+
+bucket_name = "my-slack-events-bucket"
+
+slack_interactive_components_verification_token = "myVerificationToken"
+slack_interactive_components_callback_ids       = [
+  "callback_1",
+  "callback_2"
+]

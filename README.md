@@ -6,10 +6,10 @@ Send interactive Slack events to Google Cloud Pub/Sub using Cloud Functions.
 
 Download the credentials file from Google Cloud for your service account and rename to `client_secret.json`.
 
-Then, create a `main.tf` file with the following contents (filling in the module version):
+Then, create a `main.tf` file with the following contents:
 
 ```terraform
-# terraform.tf
+# main.tf
 
 provider "google" {
   credentials = "${file("client_secret.json")}"
@@ -19,13 +19,15 @@ provider "google" {
 
 module "slack_interactive_components" {
   source             = "amancevice/slack-interactive-components/google"
-  bucket_name        = "${var.bucket_name}"
-  verification_token = "${var.verification_token}"
+  bucket_name        = "<your-cloud-storage-bucket>"
+  verification_token = "<slack-verification-token>"
   callback_ids       = [
     # Your custom callback IDs here
   ]
 }
 ```
+
+_Note: this is not a secure way of storing your verification token. See the [example](./example) for more secure/detailed deployment._
 
 In a terminal window, initialize the state:
 

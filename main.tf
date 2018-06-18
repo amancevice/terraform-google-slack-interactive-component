@@ -7,7 +7,7 @@ provider "template" {
 }
 
 locals {
-  version = "0.6.0"
+  version = "0.6.1"
 }
 
 data "google_client_config" "cloud" {
